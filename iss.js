@@ -1,16 +1,27 @@
+
+const request = require('request');
+
 /* -makes a single API request to retrieve the user's IP address. 
 input: 
 a callback to pass back an error or the IP string
 returns via callback:
 -an error, if any (nullable)
--the IP address as a string (null if error). 
+-the IP address as a string (null if error).
 */
 const fetchMyIP = function(callback) {
   //use request to fetch IP address from JSON API
-
+  request('https://api.ipify.org?format=json', (error, response, body) => {
+    if (error) {
+      callback(error);
+      return;
+    } else {
+      //turn json into object
+      const ipData = JSON.stringify(body);
+      console.log(ipData);
+    }
+  });
 };
-
-
+fetchMyIP();
 /*
 expected output of:
 > node index.js
