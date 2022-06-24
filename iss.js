@@ -11,17 +11,20 @@ returns via callback:
 const fetchMyIP = function(callback) {
   //use request to fetch IP address from JSON API
   request('https://api.ipify.org?format=json', (error, response, body) => {
-    if (error) {
-      callback(error);
+    if (error) return callback(error, null);
+
+    //if non-200 status, assume server error
+    if (response.statusCode !== 200) {
+      callback(Error(`Status Code ${response.statusCode} when fetching IP: ${body}`), null);
       return;
-    } else {
-      //turn json into object
-      const ipData = JSON.stringify(body);
-      console.log(ipData);
+
     }
+    //turn json into object
+    const ipData = JSON.parse(body);
+    console.log(null, ipData);
   });
 };
-fetchMyIP();
+//fetchMyIP();
 /*
 expected output of:
 > node index.js
